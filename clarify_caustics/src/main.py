@@ -12,6 +12,7 @@ plt.show()
 
 img = img_org.filter(ImageFilter.FIND_EDGES)
 img_np = np.array(img)
+plt.subplot(1, 1, 1)
 plt.imshow(img_np)
 plt.show()
 
@@ -21,10 +22,15 @@ plt.imshow(img_np)
 plt.show()
 
 img = img_org.convert("L")
-img = img.point(lambda x: 0 if x < 20 else x)
-img_np = np.array(img)
-plt.imshow(img_np)
+for i in range(1, 7):
+    img = img.point(lambda x: 0 if x < i * 10 else x)
+    img_np = np.array(img)
+    plt.subplot(2, 3, i)
+    plt.title("Threshold: " + str(i * 10))
+    plt.imshow(img_np)
+plt.tight_layout()
 plt.show()
+plt.savefig("data/threshold.png")
 
 img = ImageOps.equalize(img_org)
 img_np = np.array(img)
