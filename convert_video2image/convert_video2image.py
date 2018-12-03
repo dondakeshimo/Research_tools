@@ -5,8 +5,7 @@ import os
 
 def make_out_dir_name(video_path):
     out_dir = video_path.replace(".mpg", "")
-    out_dir = video_path.replace("¥", "/")
-    out_dir = out_dir.split("/")[-1]
+    out_dir = out_dir.split(os.sep)[-1]
     out_dir = "./images/" + out_dir
 
     return out_dir
