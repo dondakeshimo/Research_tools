@@ -3,22 +3,33 @@ import glob
 import os
 
 
+def make_out_dir_name(video_path):
+    out_dir = video_path.replace(".mpg", "")
+    out_dir = out_dir.split("/")[-1]
+    out_dir = "./images/" + out_dir
+
+    return out_dir
+
+
+def convert_video2image(v_path, out_dir):
+    out_path = "{}/image%04d.png".format(out_dir)
+    stream = ffmpeg.input(v_path)
+    stream = ffmpeg.output(stream, out_path, r=5, vf="scale=684:504")
+    ffmpeg.run(stream)
+
+
 def main():
     video_path = glob.glob("./videos/*.mpg")
 
     for v_path in video_path:
-        no_ext = v_path.replace(".mpg", "")
-        no_ext = no_ext.split("/")[-1]
+        out_dir = make_out_dir_name(v_path)
 
-        if os.path.isdir(no_ext):
+        if os.path.isdir(out_dir):
             continue
         else:
-            os.mkdir(no_ext)
+            os.mkdir(out_dir)
 
-        out_path = "{}/image%03d.png".format(no_ext)
-        stream = ffmpeg.input(v_path)
-        stream = ffmpeg.output(stream, out_path, r=5)
-        ffmpeg.run(stream)
+        convert_video2image(v_path, out_dir)
 
 
 if __name__ == "__main__":
